@@ -17,16 +17,16 @@ public class EntryRepository {
     @Autowired
     private MongoOperations mongoOperations;
 
-    public void markAsHot(Long id) {
+    public void markAsHot(Long id, int hour) {
         Query findByIdQuery = new Query();
         findByIdQuery.addCriteria(Criteria.where("_id").is(id));
 
         Update markAsHot = new Update();
-        markAsHot.set("hot", true);
+        markAsHot.set("hot" + hour, true);
 
         WriteResult writeResult = mongoOperations.updateFirst(findByIdQuery, markAsHot, entryCollection);
 
-        if(writeResult.getN() == 0) {
+        if (writeResult.getN() == 0) {
             log.error("ID: {} is hot but was not found in DB. Tag publicly blacklisted?", id);
         }
     }
