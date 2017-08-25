@@ -2,6 +2,7 @@ package pl.grizwold.mirkohotmarker.repo;
 
 import com.mongodb.WriteResult;
 import lombok.extern.slf4j.Slf4j;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -23,6 +24,7 @@ public class EntryRepository {
 
         Update markAsHot = new Update();
         markAsHot.set("hot" + hour, true);
+        markAsHot.set("hot" + hour + "_date", DateTime.now());
 
         WriteResult writeResult = mongoOperations.updateFirst(findByIdQuery, markAsHot, entryCollection);
 
